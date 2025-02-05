@@ -1,0 +1,5 @@
+<button (click)="login()">Login com GitHub</button>
+<div *ngIf="user">
+  <h3>Bem-vindo, {{ user.name }}</h3>
+  <img [src]="user.avatarUrl" width="100">
+</div>
