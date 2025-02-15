@@ -1,0 +1,72 @@
+<div class="container">
+
+    <h2>Cadastrar Log</h2>
+    <form [formGroup]="logForm" (ngSubmit)="onSubmit()" class="container">
+        <div class="row">
+            <mat-form-field class="full-width">
+                <mat-label>Título</mat-label>
+                <input matInput formControlName="title" placeholder="Título do log">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+                <mat-label>ID do Projeto</mat-label>
+                <input matInput formControlName="projectId" placeholder="ID do Projeto">
+            </mat-form-field>
+        </div>
+
+        <div class="row">
+            <mat-form-field class="full-width textarea">
+                <mat-label>Descrição</mat-label>
+                <textarea matInput formControlName="description" placeholder="Descrição detalhada"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class="row">
+            <mat-form-field class="full-width">
+                <mat-label>Tags</mat-label>
+                <mat-chip-grid #chipGrid>
+                    <mat-chip-row *ngFor="let tag of tags" (removed)="removeTag(tag)" [editable]="true">
+                        {{ tag }}
+                        <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip-row>
+                    <input placeholder="Nova Tag..." [matChipInputFor]="chipGrid"
+                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                        (matChipInputTokenEnd)="addTag($event)" />
+                </mat-chip-grid>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Categoria</mat-label>
+                <mat-select formControlName="category">
+                    <mat-option *ngFor="let category of categories" [value]="category">
+                        {{ category }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <h3>Anexos</h3>
+        <div formArrayName="attachments" class="row">
+            <div class="col" *ngFor="let attachment of attachments.controls; let i = index" [formGroupName]="i">
+                <mat-form-field class="full-width">
+                    <mat-label>Nome do Arquivo</mat-label>
+                    <input matInput formControlName="fileName" placeholder="Nome do Arquivo">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>URL</mat-label>
+                    <input matInput formControlName="url" placeholder="URL do Arquivo">
+                </mat-form-field>
+
+                <button mat-icon-button color="warn" (click)="removeAttachment(i)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+        <button mat-button color="primary" (click)="addAttachment()">Adicionar Anexo</button>
+        <div class="col">
+            <button mat-raised-button color="primary" type="submit">Salvar</button>
+        </div>
+    </form>
+</div>

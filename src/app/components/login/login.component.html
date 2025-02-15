@@ -1,0 +1,21 @@
+<div class="card">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <mat-form-field class="example-full-width">
+            <h2>Login</h2>
+            <div>
+                <mat-label>Email:</mat-label>
+                <input matInput placeholder="email@example.com" type="email" formControlName="email" />
+            </div>
+            <div>
+                <mat-label>Senha:</mat-label>
+                <input matInput type="password" formControlName="password" />
+            </div>
+            <button mat-button type="submit" [disabled]="loginForm.invalid">Login</button>
+        </mat-form-field>
+    </form>
+
+    <button class="github-button" (click)="loginWithGitHub()">
+        <img src="github-mark.svg" alt="GitHub" />
+        Login com GitHub
+      </button>
+</div>

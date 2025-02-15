@@ -3,10 +3,11 @@ import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, OAuthModule],
+  imports: [CommonModule, OAuthModule,MatSlideToggleModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
