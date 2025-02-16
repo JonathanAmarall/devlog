@@ -8,12 +8,12 @@ import { Subject } from 'rxjs';
   styleUrls: ['./confirm-dialog.component.scss'],
 })
 export class ConfirmDialogComponent {
-  confirmResult: Subject<boolean>;
+  confirmResult: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ConfirmDialogComponent>
-  ) {}
+  ) { }
 
   clickYes(): void {
     this.confirmResult.next(true);

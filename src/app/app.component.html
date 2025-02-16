@@ -1,3 +1,7 @@
-<app-sidenav>
-    <router-outlet />
-</app-sidenav>
+<app-sidenav *ngIf="showSidenav">
+    <router-outlet></router-outlet>
+  </app-sidenav>
+  
+  <!-- Se não for para mostrar o sidenav, só o conteúdo -->
+  <router-outlet *ngIf="!showSidenav"></router-outlet>
+  

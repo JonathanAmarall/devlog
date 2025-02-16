@@ -14,12 +14,7 @@
             </mat-form-field>
         </div>
 
-        <div class="row">
-            <mat-form-field class="full-width textarea">
-                <mat-label>Descrição</mat-label>
-                <textarea matInput formControlName="description" placeholder="Descrição detalhada"></textarea>
-            </mat-form-field>
-        </div>
+
 
         <div class="row">
             <mat-form-field class="full-width">
@@ -45,7 +40,21 @@
                 </mat-select>
             </mat-form-field>
         </div>
-
+        <div class="row">
+            <editor formControlName="description" [init]="{
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                      'advlist autolink lists link image charmap print preview anchor',
+                      'searchreplace visualblocks code fullscreen',
+                      'insertdatetime media table paste code help wordcount'
+                    ],
+                    toolbar:
+                      'undo redo | formatselect | bold italic backcolor | \
+                      alignleft aligncenter alignright alignjustify | \
+                      bullist numlist outdent indent | removeformat | help'
+                  }" apiKey="tohoirudhjygr4wjymoplfuwpj617fn3qr50dnwhsn3k9ljt"></editor>
+        </div>
         <h3>Anexos</h3>
         <div formArrayName="attachments" class="row">
             <div class="col" *ngFor="let attachment of attachments.controls; let i = index" [formGroupName]="i">
@@ -68,5 +77,6 @@
         <div class="col">
             <button mat-raised-button color="primary" type="submit">Salvar</button>
         </div>
+        {{this.logForm.get('description')?.value}}
     </form>
 </div>

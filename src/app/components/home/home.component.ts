@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OAuthModule } from 'angular-oauth2-oidc';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, OAuthModule,MatSlideToggleModule],
+  imports: [CommonModule, OAuthModule, MatSlideToggleModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -23,7 +23,7 @@ export class HomeComponent {
     this.route.queryParams.subscribe(params => {
       const code = params['code'];
       if (code) {
-        this.authService.getUserData(code).subscribe((response:any) => {
+        this.authService.getUserData(code).subscribe((response: any) => {
           this.user = response.user;
         });
       }
@@ -31,6 +31,6 @@ export class HomeComponent {
   }
 
   login() {
-    this.authService.login();
+    this.authService.loginWithGithub();
   }
 }

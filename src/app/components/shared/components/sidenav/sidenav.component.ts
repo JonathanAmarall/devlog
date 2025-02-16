@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth.service';
 
 interface SidenavRoute {
   redirectTo: string;
@@ -41,19 +42,27 @@ export class SidenavComponent {
   routes: SidenavRoute[] = [
     {
       title: "Home",
-      redirectTo: "/"
+      redirectTo: "log/home"
+    },
+    {
+      title: "Add Logs",
+      redirectTo: "log/log-form"
     },
     {
       title: "My Logs",
-      redirectTo: "log/log-form"
+      redirectTo: "log/log-table"
     }
   ]
 
-  constructor(private breakpointObserver: BreakpointObserver) {
+  constructor(private breakpointObserver: BreakpointObserver, private authService: AuthService) {
     this.isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset)
       .pipe(
         map(result => result.matches),
         shareReplay()
       );
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

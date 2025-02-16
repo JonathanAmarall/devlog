@@ -8,6 +8,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { EditorModule } from '@tinymce/tinymce-angular';
+import { Log, LogService } from '../services/log.service';
+import { NotifyService } from '../../shared/services/notify.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-log-form',
@@ -21,7 +25,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
     MatCardModule,
     MatSelectModule,
     MatChipsModule,
-    MatIconModule
+    MatIconModule,
+    EditorModule
   ],
   templateUrl: './log-form.component.html',
   styleUrls: ['./log-form.component.scss']
@@ -29,12 +34,11 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 export class LogFormComponent {
   readonly separatorKeysCodes = [ENTER, COMMA] as const
   readonly addOnBlur = true;
-
   logForm: FormGroup;
   categories = ['Bug', 'Feature', 'Improvement', 'Task'];
   tags: string[] = ['Call', 'Documentação', 'Azure', 'Deploy'];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private logService: LogService, private notifyService: NotifyService, private router: Router) {
     this.logForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -87,7 +91,17 @@ export class LogFormComponent {
 
   onSubmit() {
     if (this.logForm.valid) {
-      console.log('Form Value:', this.logForm.value);
+      const log = this.logForm.value as Log;
+      this.logService.createLog(log).subscribe(
+        {
+          next: (v) => {
+            this.notifyService.success({ "msg": "Salvo com sucesso!" });
+            this.logForm.reset();
+            this.router.navigateByUrl('/log/log-table')
+          },
+          error: (e) => this.notifyService.alert({ "msg": "Ops! Algo deu errado. Tente novamente!" })
+        })
+
     }
   }
 }

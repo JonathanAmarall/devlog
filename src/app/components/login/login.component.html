@@ -1,21 +1,36 @@
 <div class="card">
     <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <h2>Login</h2>
         <mat-form-field class="example-full-width">
-            <h2>Login</h2>
-            <div>
-                <mat-label>Email:</mat-label>
-                <input matInput placeholder="email@example.com" type="email" formControlName="email" />
-            </div>
-            <div>
-                <mat-label>Senha:</mat-label>
-                <input matInput type="password" formControlName="password" />
-            </div>
-            <button mat-button type="submit" [disabled]="loginForm.invalid">Login</button>
-        </mat-form-field>
-    </form>
 
-    <button class="github-button" (click)="loginWithGitHub()">
-        <img src="github-mark.svg" alt="GitHub" />
-        Login com GitHub
-      </button>
+            <mat-label>Email:</mat-label>
+            <input matInput placeholder="email@example.com" type="email" formControlName="email" />
+            @if (loginForm.hasError('email') && !loginForm.hasError('required')) {
+            <mat-error>Please enter a valid email address</mat-error>
+            }
+            @if (loginForm.hasError('required')) {
+            <mat-error>Email is <strong>required</strong></mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Senha:</mat-label>
+            <input matInput type="password" formControlName="password" />
+            @if (loginForm.hasError('password') && !loginForm.hasError('required')) {
+            <mat-error>Please enter a valid email address</mat-error>
+            }
+            @if (loginForm.hasError('password')) {
+            <mat-error>Email is <strong>required</strong></mat-error>
+            }
+        </mat-form-field>
+        <button mat-button type="submit" color="primary" [disabled]="loginForm.invalid">Login</button>
+        <button mat-button type="reset" [disabled]="loginForm.invalid">Limpar</button>
+
+    </form>
+    <div class="social-login-container">
+        <button mat-button class="github-button" (click)="loginWithGitHub()">
+            <img src="github-mark.svg" alt="GitHub" />
+            Login com GitHub
+        </button>
+    </div>
 </div>

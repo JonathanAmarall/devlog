@@ -12,9 +12,9 @@ interface Notify {
   providedIn: 'root',
 })
 export class NotifyService {
-  constructor(private _snackBar: MatSnackBar) {}
-  private title: string;
-  private body: string;
+  constructor(private _snackBar: MatSnackBar) { }
+  private title: string = "";
+  private body: string = "";
 
   success({
     msg,
