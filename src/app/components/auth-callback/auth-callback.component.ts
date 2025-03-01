@@ -1,15 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { OAuthModule, OAuthService } from 'angular-oauth2-oidc';
+import { OAuthModule } from 'angular-oauth2-oidc';
 import { CommonModule } from '@angular/common';
-
-interface IUser {
-  username: string;
-  email: string;
-  avatarUrl: string;
-  userId: string;
-}
 
 @Component({
   standalone: true,
@@ -19,17 +11,13 @@ interface IUser {
   styleUrl: './auth-callback.component.css'
 })
 export class AuthCallbackComponent {
-  constructor(private route: ActivatedRoute, private router: Router) { }
-  user!: IUser;
+  constructor(
+    private  authService: AuthService) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.user = {
-        avatarUrl: params['avatarUrl'],
-        email: params['email'],
-        userId: params['userId'],
-        username: params['username']
-      };
-    });
+    const code = new URLSearchParams(window.location.search).get('code');
+    if (code) {
+     this.authService.githubAuthorize(code)
+    }
   }
 }

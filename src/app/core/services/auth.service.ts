@@ -1,14 +1,21 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpXsrfTokenExtractor } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
+import { TokenService } from '../token.service';
+import { authConfig } from '../auth/auth.config';
+import { tap } from 'rxjs';
 
 const BASE_URL = environment.apiUrl;
 
 export interface LoginResponse {
   user: User;
-  token: string;
+  token: Token;
+}
+
+export interface Token {
+  value: string;
 }
 
 export interface User {
@@ -20,33 +27,30 @@ export interface User {
   bio: string;
 }
 
-
+export function initAuth(oauthService: OAuthService): () => Promise<void> {
+  return async () => {
+    oauthService.configure(authConfig);
+    await oauthService.loadDiscoveryDocumentAndTryLogin();
+  };
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
+  deps: [OAuthService],
 })
 export class AuthService {
 
+
   constructor(
-    private http: HttpClient, private oauthService: OAuthService, private router: Router) {
-    this.configureOAuth();
-  }
-
-  private configureOAuth(): void {
-    const authConfig: AuthConfig = {
-      issuer: '', // Não usado para GitHub, mas necessário para o contrato
-      clientId: 'Ov23liMqYIA5VGL6M2cl', // Obtido no GitHub
-      redirectUri: window.location.origin + '/auth/callback',
-      loginUrl: `${BASE_URL}/auth/github/login`,
-      tokenEndpoint: `${BASE_URL}/auth/github/callback`, // Backend
-      responseType: 'code', // OAuth Code Flow
-      scope: 'read:user user:email', // Scopes do GitHub
-      showDebugInformation: true, // Para depuração
-      requireHttps: false
-    };
-
+    private http: HttpClient,
+    private oauthService: OAuthService,
+    private router: Router,
+    private tokenService: TokenService) {
     this.oauthService.configure(authConfig);
-    this.oauthService.loadDiscoveryDocumentAndTryLogin();
+
+    oauthService
+      .loadDiscoveryDocumentAndTryLogin()
+      .then(console.log);
   }
 
   login(email: string, password: string) {
@@ -54,28 +58,36 @@ export class AuthService {
       email, password
     }).subscribe({
       next: res => {
-        console.log(res)
-        localStorage.setItem('user', JSON.stringify(res.user))
-        localStorage.setItem('authToken', JSON.stringify(res.token))
+        this.tokenService.setToken(res.token.value);
         this.router.navigateByUrl('/')
       }
     })
   }
 
   loginWithGithub(): void {
-    window.location.href = `${BASE_URL}/auth/github/login`;
+    this.oauthService.initLoginFlow();
+  }
+
+  githubUser() {
+    this.http.get(`${BASE_URL}/auth/user`).subscribe();
   }
 
   logout(): void {
-    localStorage.removeItem('authToken');
+    this.tokenService.removeToken();
     this.router.navigateByUrl('auth/login')
-  }
-
-  getUserData(code: string) {
-    return this.http.get(`${BASE_URL}/auth/github/callback?code=${code}`);
   }
 
   isAuthenticated(): boolean {
     return false
+  }
+
+  githubAuthorize(code: string) {
+    this.http.post<LoginResponse>(`${BASE_URL}/auth/github/login`, { code })
+      .pipe(
+        tap(res => {
+          this.tokenService.setToken(res.token.value);
+          this.router.navigateByUrl('/')
+        })
+      ).subscribe();
   }
 }

@@ -12,6 +12,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { AvatarComponent } from '../../avatar/avatar.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 interface SidenavRoute {
   redirectTo: string;
@@ -31,7 +33,9 @@ interface SidenavRoute {
     MatButtonModule,
     MatDialogModule,
     MatSnackBarModule,
-    RouterModule
+    RouterModule,
+    AvatarComponent,
+    MatMenuModule
   ],
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']

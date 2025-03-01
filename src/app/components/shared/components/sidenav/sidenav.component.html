@@ -10,12 +10,34 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="mat.$orange-palette">
+    <mat-toolbar color="mat.$orange-palette" class="header">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span class="logo">Dev</span>Log
+      <div>
+        <span class="logo">Dev</span>Log
+      </div>
+      <div>
+        <button mat-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <app-avatar username="John Doe"></app-avatar>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>dialpad</mat-icon>
+            <span>Redial</span>
+          </button>
+          <button mat-menu-item disabled>
+            <mat-icon>voicemail</mat-icon>
+            <span>Check voice mail</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>notifications_off</mat-icon>
+            <span>Disable alerts</span>
+          </button>
+        </mat-menu>
+
+      </div>
     </mat-toolbar>
     <div class="content">
       <!-- Add Content Here -->

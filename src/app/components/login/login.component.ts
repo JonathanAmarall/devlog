@@ -51,8 +51,7 @@ export class LoginComponent {
     }
   }
 
-  loginWithGitHub() {
-    console.log('Login com GitHub');
+  loginWithGitHub() {    
     this.authService.loginWithGithub();
   }
 }

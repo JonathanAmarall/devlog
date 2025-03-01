@@ -21,16 +21,7 @@ export class HomeComponent {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      const code = params['code'];
-      if (code) {
-        this.authService.getUserData(code).subscribe((response: any) => {
-          this.user = response.user;
-        });
-      }
+  
     });
-  }
-
-  login() {
-    this.authService.loginWithGithub();
   }
 }

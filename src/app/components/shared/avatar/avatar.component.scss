@@ -1,0 +1,20 @@
+div {
+
+    margin: 10px 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    h2 {
+        margin-right: 3px;
+        font-size: 1rem;
+        text-align: center;
+        color: var('--primary')
+    }
+
+    img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+    }
+}
