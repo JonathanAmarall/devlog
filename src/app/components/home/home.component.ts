@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../core/services/auth.service';
+import { Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OAuthModule } from 'angular-oauth2-oidc';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { AppComponentBase } from '../shared/components/app-component-base.component';
+import { LoadingService } from '../shared/loading.service';
 
 @Component({
   standalone: true,
@@ -11,17 +11,17 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent extends AppComponentBase {
   user: any;
   constructor(
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) { }
+    injector: Injector,
+    private loadingService: LoadingService
+  ) {
+    super(injector);
+  }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-  
-    });
+    this.loadingService.show()
+    setInterval(() => this._loadingService.show(), 1000)
   }
 }

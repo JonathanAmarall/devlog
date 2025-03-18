@@ -1,6 +1,6 @@
 <div class="container">
-
     <h2>Cadastrar Log</h2>
+
     <form [formGroup]="logForm" (ngSubmit)="onSubmit()" class="container">
         <div class="row">
             <mat-form-field class="full-width">
@@ -13,9 +13,6 @@
                 <input matInput formControlName="projectId" placeholder="ID do Projeto">
             </mat-form-field>
         </div>
-
-
-
         <div class="row">
             <mat-form-field class="full-width">
                 <mat-label>Tags</mat-label>
@@ -41,8 +38,8 @@
             </mat-form-field>
         </div>
         <div class="row">
-            <editor formControlName="description" [init]="{
-                    height: 500,
+            <editor class="editor" formControlName="description" [init]="{
+                    height: 500,                    
                     menubar: false,
                     plugins: [
                       'advlist autolink lists link image charmap print preview anchor',

@@ -32,6 +32,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./log-form.component.scss']
 })
 export class LogFormComponent {
+
   readonly separatorKeysCodes = [ENTER, COMMA] as const
   readonly addOnBlur = true;
   logForm: FormGroup;
@@ -101,7 +102,6 @@ export class LogFormComponent {
           },
           error: (e) => this.notifyService.alert({ "msg": "Ops! Algo deu errado. Tente novamente!" })
         })
-
     }
   }
 }

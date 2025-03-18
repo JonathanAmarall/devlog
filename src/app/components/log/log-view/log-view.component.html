@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>{{log?.title}}</h2>
+<mat-dialog-content class="container">
+    <div [innerHTML]="log?.description"></div>
+    <mat-divider></mat-divider>
+    <br>
+    <div class="row">
+        <div> Status: <label [className]="'status-'+log?.status">{{log?.status}}</label></div>
+        <div> Categoria: {{log?.category}}</div>
+        <div> Tags: {{log?.tags}}</div>
+        <div> Data: {{log?.createdAt | date: 'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="row">
+    </div>
+    <div *ngIf="log?.projectId"> Projeto: {{log?.projectId}}</div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>  

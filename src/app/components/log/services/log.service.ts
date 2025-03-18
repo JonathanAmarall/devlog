@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment.development';
 
 export interface Log {
   title: string;
@@ -8,7 +9,7 @@ export interface Log {
   category: string;
   tags: string[];
   projectId: string;
-  status: LogStatus;
+  status: LogStatus | string;
   attachments: {
     fileName: string;
     url: string;
@@ -34,7 +35,7 @@ export enum LogStatus {
   providedIn: 'root'
 })
 export class LogService {
-  private baseUrl = 'http://localhost:5000/api/v1/log-entry';  // URL do seu backend
+  private baseUrl = environment.apiUrl + '/api/v1/log-entry';
 
   constructor(private http: HttpClient) { }
 
@@ -43,10 +44,14 @@ export class LogService {
     return this.http.post(this.baseUrl, log, { headers });
   }
 
-  getLogs(pageNumber: number, pageSize: number): Observable<PagedResponse<Log>> {
-    const params = new HttpParams()
+  getLogs(pageNumber: number, pageSize: number, title?: string): Observable<PagedResponse<Log>> {
+    let params = new HttpParams()
       .set('pageNumber', pageNumber.toString())
       .set('pageSize', pageSize.toString());
+
+    if (title) {
+      params = params.set('title', title);
+    }
 
     return this.http.get<PagedResponse<Log>>(this.baseUrl, { params });
   }
